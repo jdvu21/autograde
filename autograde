@@ -1,2 +1,11 @@
 #!/bin/bash
-echo "hello world"
+
+for i in /home/collard/UniversityOfC/CSI/*/;
+do
+  cd $i
+  for j in *.c
+    do
+      echo $j
+	pwd
+    done
+done
