@@ -2,10 +2,21 @@
 
 for i in /home/collard/UniversityOfC/CSI/*/;
 do
-  cd $i
-  for j in *.c
-    do
-      echo $j
-	pwd
-    done
+	file = $(echo $i*.txt)
+	name = $(cat $file)
+	report = $(basename $i)
+	cfile = $(echo $i* . c)
+	source = $(cat $cfile)
+	filename = $(echo $a* .c | tr "/" "\n" | tail -1 | cut -d'.' -f1)
+
+	echo $filename
+	echo "Name: $name" > $report.txt
+	echo "Username: $report" >> $report.txt
+	echo "Compile commands: gcc -o $filename $cfile" >> $report.txt
+	echo "Source code: " >> $report.txt
+	echo "$source" >> $report.txt
+	echo "Compile errors:" >> $report.txt
+	gcc -o $filename $filec 2>> $report.txt
+	echo "Tests:" >> $report.txt
+	
 done
