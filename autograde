@@ -2,21 +2,46 @@
 
 for i in /home/collard/UniversityOfC/CSI/*/;
 do
-	file = $(echo $i*.txt)
-	name = $(cat $file)
-	report = $(basename $i)
-	cfile = $(echo $i* . c)
-	source = $(cat $cfile)
-	filename = $(echo $a* .c | tr "/" "\n" | tail -1 | cut -d'.' -f1)
+	#touch report.txt
+	#echo $i*.txt
+	#echo $i*.c
 
-	echo $filename
-	echo "Name: $name" > $report.txt
-	echo "Username: $report" >> $report.txt
-	echo "Compile commands: gcc -o $filename $cfile" >> $report.txt
-	echo "Source code: " >> $report.txt
-	echo "$source" >> $report.txt
-	echo "Compile errors:" >> $report.txt
-	gcc -o $filename $filec 2>> $report.txt
-	echo "Tests:" >> $report.txt
-	
+	FILE=$(echo $i*.txt)
+	NAME=$(cat $FILE)
+	REPORT=$(basename $i)
+	touch $REPORT.txt
+	CFILE=$(echo $i* . c)
+	echo $CFILE
+	SRC=$(cat $CFILE)
+	FILENAME=$(echo $CFILE | tr "/" "\n"|tail -1|cut -d'.' -f1)
+
+	echo "Filename: $FILENAME"
+	echo "Name: $NAME" > $REPORT.txt
+	echo
+	echo "Username: $REPORT" >> $REPORT.txt
+	echo
+	echo "Compile commands: gcc -o $FILENAME $CFILE" >> $REPORT.txt
+	echo
+	echo "Source code: " >> $REPORT.txt
+	echo "$SRC" >> $REPORT.txt
+	echo
+	echo "Compile errors:" >> $REPORT.txt
+	gcc -o $FILENAME $CFILE 2>> $REPORT.txt
+	echo "Tests:" >> $REPORT.txt
+	x=$(shuf -i 1-100 -n 1)
+        y=$(shuf -i 1-100 -n 1)
+        (echo "$x"  ; echo "$y")|./$FILENAME > tests.txt
+        read -r a < tests.txt
+        a1=$(echo "$a"|cut -d":" -f1)
+        a2=$(echo "$a"|sed 's/  //'| cut -d":" -f2)
+        a3=$(echo "$a"|cut -d":" -f3)
+        echo "$a1 : $x" >> $REPORT.txt
+        echo "$a2 : $y" >> $REPORT.txt
+        echo $a3 >> $REPORT.txt
 done
+
+$(enscript -Ec --columns=2 -o $REPORT.ps $REPORT.txt)
+$(ps2pdf $REPORT.ps $REPORT.pdf)
+$(rm $REPORT.ps)
+$(rm $REPORT.txt)
+$(rm $FILENAME)
